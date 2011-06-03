@@ -150,8 +150,8 @@ namespace twilio.sugar.Model
                 sms_fallback_url = data.sms_fallback_url,
                 sms_fallback_method = data.sms_fallback_method,
                 capabilities = new Capabilities {
-                    sms = data.capabilities.sms,
-                    voice = data.capabilities.voice
+                    sms = !String.IsNullOrEmpty(data.capabilities.sms) ? Convert.ToBoolean(data.capabilities.sms) : null,
+                    voice = !String.IsNullOrEmpty(data.capabilities.voice) ? Convert.ToBoolean(data.capabilities.voice) : null
                 },
                 status_callback = data.status_callback,
                 status_callback_method = data.status_callback_method,
