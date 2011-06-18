@@ -16,6 +16,6 @@ Compile this class library, drop the dll into your app, and write some code:
 
 	TwilioAccount account = new TwilioAccount();
 	PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-	IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailablePhoneNumbers(AreaCode: 480);
+	IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableLocalPhoneNumbers(AreaCode: 480);
 
 This should get you a list of available phone numbers.
