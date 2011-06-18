@@ -9,7 +9,7 @@ namespace twilio.sugar.Model
     {
         const String ApiVersion = "2010-04-01";
         const String IsoCountryCode = "US";
-        const String AccountSid = "ACba8bc05eacf94afdae398e642c9cc32d";
+        const String AccountSid = "fake_sid";
         const String AuthToken = "fake_test_token";
 
         private ITwilioAccount account;
@@ -71,23 +71,19 @@ namespace twilio.sugar.Model
             return twilioAccount;
         }
 
-        public IList<AvailablePhoneNumber> AvailablePhoneNumbers(Int32? areaCode = null, String contains = null, String inRegion = null, Int32? inPostalCode = null)
+        public IList<AvailablePhoneNumber> AvailableLocalPhoneNumbers(Int32? areaCode = null, String contains = null, String inRegion = null, Int32? inPostalCode = null)
         {
             parameters.Clear();
-            if (areaCode.HasValue)
-            {
+            if (areaCode.HasValue) {
                 parameters.Add("AreaCode", areaCode);
             }
-            if (!String.IsNullOrEmpty(contains))
-            {
+            if (!String.IsNullOrEmpty(contains)) {
                 parameters.Add("Contains", contains);
             }
-            if (!String.IsNullOrEmpty(inRegion))
-            {
+            if (!String.IsNullOrEmpty(inRegion)) {
                 parameters.Add("InRegion", inRegion);
             }
-            if (inPostalCode.HasValue)
-            {
+            if (inPostalCode.HasValue) {
                 parameters.Add("InPostalCode", inPostalCode);
             }
 
@@ -96,10 +92,37 @@ namespace twilio.sugar.Model
 
             IList<AvailablePhoneNumber> phoneNumbers = new List<AvailablePhoneNumber>();
 
-            foreach (dynamic item in data.available_phone_numbers)
-            {
-                phoneNumbers.Add(new AvailablePhoneNumber
-                {
+            foreach (dynamic item in data.available_phone_numbers) {
+                phoneNumbers.Add(new AvailablePhoneNumber {
+                    friendly_name = item.friendly_name,
+                    iso_country = item.iso_country,
+                    lata = item.lata,
+                    latitude = !String.IsNullOrEmpty(item.latitude) ? Convert.ToDecimal(item.latitude) : null,
+                    longitude = !String.IsNullOrEmpty(item.longitude) ? Convert.ToDecimal(item.longitude) : null,
+                    phone_number = item.phone_number,
+                    postal_code = item.postal_code,
+                    rate_center = item.rate_center,
+                    region = item.region
+                });
+            }
+
+            return phoneNumbers;
+        }
+
+        public IList<AvailablePhoneNumber> AvailableTollFreePhoneNumbers(String contains = null)
+        {
+            parameters.Clear();
+            if (!String.IsNullOrEmpty(contains)) {
+                parameters.Add("Contains", contains);
+            }
+
+            twilioResponse = account.request(String.Format("/{0}/Accounts/{1}/AvailablePhoneNumbers/{2}/TollFree.json", ApiVersion, AccountSid, IsoCountryCode), "GET", parameters);
+            dynamic data = ParseResponseData(twilioResponse);
+
+            IList<AvailablePhoneNumber> phoneNumbers = new List<AvailablePhoneNumber>();
+
+            foreach (dynamic item in data.available_phone_numbers) {
+                phoneNumbers.Add(new AvailablePhoneNumber {
                     friendly_name = item.friendly_name,
                     iso_country = item.iso_country,
                     lata = item.lata,

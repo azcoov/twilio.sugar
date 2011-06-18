@@ -112,11 +112,31 @@ namespace twilio.sugar.tests
         }
 
         [TestMethod()]
-        public void AvailablePhoneNumbersByAreaCodeShouldReturnAvailablePhoneNumbersList()
+        public void AvailableLocalPhoneNumbersByAreaCodeShouldReturnAvailablePhoneNumbersList()
         {
             TwilioAccount_Mock account = new TwilioAccount_Mock();
             PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailablePhoneNumbers(1);
+            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableLocalPhoneNumbers(1);
+
+            Assert.IsNotNull(AvailablePhoneNumbers);
+        }
+
+        [TestMethod()]
+        public void AvailableTollFreePhoneNumbersShouldReturnAvailablePhoneNumbersList()
+        {
+            TwilioAccount_Mock account = new TwilioAccount_Mock();
+            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableTollFreePhoneNumbers();
+
+            Assert.IsNotNull(AvailablePhoneNumbers);
+        }
+
+        [TestMethod()]
+        public void AvailableTollFreePhoneNumbersByContainsShouldReturnAvailablePhoneNumbersList()
+        {
+            TwilioAccount_Mock account = new TwilioAccount_Mock();
+            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableTollFreePhoneNumbers("55");
 
             Assert.IsNotNull(AvailablePhoneNumbers);
         }
