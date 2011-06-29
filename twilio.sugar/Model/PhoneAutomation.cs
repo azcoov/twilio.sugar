@@ -311,7 +311,7 @@ namespace twilio.sugar.Model
                 voice_method = data.voice_method,
                 voice_fallback_url = data.voice_fallback_url,
                 voice_fallback_method = data.voice_fallback_method,
-                voice_caller_id_lookup = data.voice_caller_id_lookup,
+                voice_caller_id_lookup = Convert.ToBoolean(data.voice_caller_id_lookup),
                 date_created = !String.IsNullOrEmpty(data.date_created) ? Convert.ToDateTime(data.date_created) : null,
                 date_updated = !String.IsNullOrEmpty(data.date_updated) ? Convert.ToDateTime(data.date_updated) : null,
                 sms_url = data.sms_url,
@@ -447,19 +447,10 @@ namespace twilio.sugar.Model
             {
                 parameters.Add("SmsFallbackMethod", model.sms_fallback_method);
             }
-            if (!String.IsNullOrEmpty(model.voice_caller_id_lookup))
-            {
-                parameters.Add("VoiceCallerIdLookup", model.voice_caller_id_lookup);
-            }
         }
 
         public IList<PhoneNumber> IncomingPhoneNumbers(String phoneNumber = "", String friendlyName = "")
         {
-            if (String.IsNullOrEmpty(phoneNumber) && String.IsNullOrEmpty(friendlyName))
-            {
-                throw new ArgumentNullException("missing phoneNumber");
-            }
-
             parameters.Clear();
             if (!String.IsNullOrEmpty(phoneNumber))
             {
@@ -487,7 +478,7 @@ namespace twilio.sugar.Model
                     voice_method = item.voice_method,
                     voice_fallback_url = item.voice_fallback_url,
                     voice_fallback_method = item.voice_fallback_method,
-                    voice_caller_id_lookup = item.voice_caller_id_lookup,
+                    voice_caller_id_lookup = Convert.ToBoolean(item.voice_caller_id_lookup),
                     date_created = !String.IsNullOrEmpty(item.date_created) ? Convert.ToDateTime(item.date_created) : null,
                     date_updated = !String.IsNullOrEmpty(item.date_updated) ? Convert.ToDateTime(item.date_updated) : null,
                     sms_url = item.sms_url,

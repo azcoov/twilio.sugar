@@ -14,7 +14,7 @@ namespace twilio.sugar
         public String voice_method { get; set; }
         public String voice_fallback_url { get; set; }
         public String voice_fallback_method { get; set; }
-        public String voice_caller_id_lookup { get; set; }
+        public Boolean voice_caller_id_lookup { get; set; }
         public DateTime? date_created { get; set; }
         public DateTime? date_updated { get; set; }
         public String sms_url { get; set; }
