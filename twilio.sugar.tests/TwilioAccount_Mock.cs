@@ -21,6 +21,10 @@ namespace twilio.sugar.tests
             {
                 return "{\"account_sid\":\"ACba8bc05eacf94afdae398e642c9cc32d\",\"api_version\":\"2010-04-01\",\"body\":\"Jenny please?! I love you <3\",\"date_created\":\"Wed, 18 Aug 2010 20:01:40 +0000\",\"date_sent\":null,\"date_updated\":\"Wed, 18 Aug 2010 20:01:40 +0000\",\"direction\":\"outbound-api\",\"from\":\"+14158141829\",\"price\":null,\"sid\":\"SM90c6fc909d8504d45ecdb3a3d5b3556e\",\"status\":\"queued\",\"to\":\"+14159352345\",\"uri\":\"/2010-04-01/Accounts/AC5ef872f6da5a21de157d80997a64bd33/SMS/Messages/SM90c6fc909d8504d45ecdb3a3d5b3556e.json\"}";
             }
+            /*if (path.Contains("Accounts.json") && method == "GET")
+            {
+                return "{\"sid\":\"ACba8bc05eacf94afdae398e642c9cc32d\",\"friendly_name\":\"Submarine\",\"auth_token\":\"redacted\",\"date_created\":\"Tue, 25 Jan 2011 19:24:40 +0000\",\"date_updated\":\"Tue, 25 Jan 2011 19:25:02 +0000\",\"status\":\"active\",\"subresource_uris\":{\"available_phone_numbers\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/AvailablePhoneNumbers.json\",\"calls\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Calls.json\",\"conferences\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Conferences.json\",\"incoming_phone_numbers\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/IncomingPhoneNumbers.json\",\"notifications\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Notifications.json\",\"outgoing_caller_ids\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/OutgoingCallerIds.json\",\"recordings\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Recordings.json\",\"sandbox\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Sandbox.json\",\"sms_messages\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/SMS/Messages.json\",\"transcriptions\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Transcriptions.json\"},\"type\":\"Full\",\"uri\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c.json\"}";
+            }*/
             if (path.Contains("Accounts.json") && method == "POST")
             {
                 return "{\"sid\":\"ACba8bc05eacf94afdae398e642c9cc32d\",\"friendly_name\":\"Submarine\",\"auth_token\":\"redacted\",\"date_created\":\"Tue, 25 Jan 2011 19:24:40 +0000\",\"date_updated\":\"Tue, 25 Jan 2011 19:25:02 +0000\",\"status\":\"active\",\"subresource_uris\":{\"available_phone_numbers\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/AvailablePhoneNumbers.json\",\"calls\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Calls.json\",\"conferences\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Conferences.json\",\"incoming_phone_numbers\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/IncomingPhoneNumbers.json\",\"notifications\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Notifications.json\",\"outgoing_caller_ids\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/OutgoingCallerIds.json\",\"recordings\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Recordings.json\",\"sandbox\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Sandbox.json\",\"sms_messages\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/SMS/Messages.json\",\"transcriptions\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c/Transcriptions.json\"},\"type\":\"Full\",\"uri\":\"/2010-04-01/Accounts/AC1365ff479ef6502d85c27be6467a310c.json\"}";
@@ -38,6 +42,16 @@ namespace twilio.sugar.tests
                 return null;
             }
             throw new NotImplementedException("Method is not implemented");
+        }
+
+        public string id
+        {
+            get { return "fake_id"; }
+        }
+
+        public string token
+        {
+            get { return "fake_token"; }
         }
     }
 }

@@ -36,9 +36,10 @@ namespace TwilioRest
     public class TwilioAccount : ITwilioAccount
     {
         const string TWILIO_API_URL = "https://api.twilio.com";
+        const string ApiVersion = "2010-04-01";
 
-        private string id;
-        private string token;
+        public string id { get; private set; }
+        public string token { get; private set; }
 
         public TwilioAccount(string id, string token)
         {
@@ -101,6 +102,8 @@ namespace TwilioRest
         
         private string _build_uri(string path)
         {
+            path = String.Format("/{0}/", ApiVersion) + path;
+
             if (path[0] == '/')
                 return TWILIO_API_URL + path;
             else
@@ -180,7 +183,6 @@ namespace TwilioRest
             return response;
         }
     }
-
 
     [Serializable()]
     public class TwilioRestException : System.Exception {

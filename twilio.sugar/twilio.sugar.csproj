@@ -50,7 +50,7 @@
     <Compile Include="Model\IPhoneAutomation.cs" />
     <Compile Include="Model\PhoneAutomation.cs" />
     <Compile Include="Model\SMS.cs" />
-    <Compile Include="Model\TwilioAccount.cs" />
+    <Compile Include="Model\Account.cs" />
     <Compile Include="Model\AvailablePhoneNumber.cs" />
     <Compile Include="Model\Capabilities.cs" />
     <Compile Include="Model\PhoneNumber.cs" />

@@ -106,9 +106,19 @@ namespace twilio.sugar.tests
         {
             TwilioAccount_Mock account = new TwilioAccount_Mock();
             PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            TwilioAccount twilioAccount = PhoneAutomation.CreateSubAccount("My new account test");
+            Account twilioAccount = PhoneAutomation.CreateSubAccount("My new account test");
 
             Assert.IsNotNull(twilioAccount);
+        }
+
+        [TestMethod()]
+        public void GetSubAccountsReturnsAccountListResource()
+        {
+            TwilioAccount_Mock account = new TwilioAccount_Mock();
+            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+            IList<Account> accounts = PhoneAutomation.GetSubAccounts();
+
+            Assert.IsNotNull(accounts);
         }
 
         [TestMethod()]
@@ -159,6 +169,33 @@ namespace twilio.sugar.tests
             IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555");
 
             Assert.IsNotNull(numbers);
+        }
+
+        [TestMethod()]
+        public void IncomingPhoneNumbersByFriendlyNameShouldReturnListOfPhoneNumbers()
+        {
+            TwilioAccount_Mock account = new TwilioAccount_Mock();
+            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+            IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555", friendlyName: "test");
+
+            Assert.IsNotNull(numbers);
+        }
+
+        [TestMethod()]
+        public void IncomingPhoneNumbersWithNowParametersShouldThrowNullReferenceError()
+        {
+            try
+            {
+                TwilioAccount_Mock account = new TwilioAccount_Mock();
+                PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+                IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers();
+                Assert.Fail("Cannot call this method without params");
+            }
+            catch (System.Exception ex)
+            {
+                Assert.IsInstanceOfType(ex, typeof(System.ArgumentNullException));
+                Assert.IsTrue(ex.Message.Contains("missing phoneNumber"));
+            }
         }
 
         [TestMethod()]
