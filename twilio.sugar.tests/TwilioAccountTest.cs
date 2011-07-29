@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using twilio.sugar.Model;
 
 namespace twilio.sugar.tests
@@ -8,27 +7,14 @@ namespace twilio.sugar.tests
     ///This is a test class for TwilioAccountTest and is intended
     ///to contain all TwilioAccountTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class TwilioAccountTest
     {
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         // 
@@ -60,135 +46,94 @@ namespace twilio.sugar.tests
         //
         #endregion
 
-        /*
-        /// <summary>
-        ///A test for TwilioAccount Constructor
-        ///</summary>
-        [TestMethod()]
-        public void TwilioAccountConstructorTest()
-        {
-            TwilioAccount target = new TwilioAccount();
-            Assert.Inconclusive("TODO: Implement code to verify target");
-        }
-         * */
-
-        /*[TestMethod()]
-        [ExpectedException(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException), "Cannot implicitly convert type 'string' to 'System.Uri'")]
-        public void UriThrowsExceptionIfInvalidData()
-        {
-            TwilioAccount target = new TwilioAccount(); // TODO: Initialize to an appropriate value
-            dynamic data = "http://www.google.com";
-            var expected = data; // TODO: Initialize to an appropriate value
-            Uri actual;
-
-            target.uri = expected;
-            actual = target.uri;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod()]
-        public void UriDynamicTestWorksWithCorrectDataType()
-        {
-            TwilioAccount target = new TwilioAccount(); // TODO: Initialize to an appropriate value
-            dynamic uri = new Uri("http://www.google.com");
-            var expected = uri; // TODO: Initialize to an appropriate value
-            Uri actual;
-
-            target.uri = expected;
-            actual = target.uri;
-
-            Assert.AreEqual(expected, actual);
-        }*/
-
-        [TestMethod()]
+        [TestMethod]
         public void CreateSubAccountReturnsNewAccountResource()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            Account twilioAccount = PhoneAutomation.CreateSubAccount("My new account test");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var twilioAccount = phoneAutomation.CreateSubAccount("My new account test");
 
             Assert.IsNotNull(twilioAccount);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetSubAccountsReturnsAccountListResource()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<Account> accounts = PhoneAutomation.GetSubAccounts();
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var accounts = phoneAutomation.GetSubAccounts();
 
             Assert.IsNotNull(accounts);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void AvailableLocalPhoneNumbersByAreaCodeShouldReturnAvailablePhoneNumbersList()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableLocalPhoneNumbers(1);
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var availablePhoneNumbers = phoneAutomation.AvailableLocalPhoneNumbers(1);
 
-            Assert.IsNotNull(AvailablePhoneNumbers);
+            Assert.IsNotNull(availablePhoneNumbers);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void AvailableTollFreePhoneNumbersShouldReturnAvailablePhoneNumbersList()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableTollFreePhoneNumbers();
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var availablePhoneNumbers = phoneAutomation.AvailableTollFreePhoneNumbers();
 
-            Assert.IsNotNull(AvailablePhoneNumbers);
+            Assert.IsNotNull(availablePhoneNumbers);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void AvailableTollFreePhoneNumbersByContainsShouldReturnAvailablePhoneNumbersList()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableTollFreePhoneNumbers("55");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var availablePhoneNumbers = phoneAutomation.AvailableTollFreePhoneNumbers("55");
 
-            Assert.IsNotNull(AvailablePhoneNumbers);
+            Assert.IsNotNull(availablePhoneNumbers);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ProvisionNumberShouldReturnNewNumberResource()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            PhoneNumber number = PhoneAutomation.ProvisionPhoneNumber("555-555-5555");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var number = phoneAutomation.ProvisionPhoneNumber("555-555-5555");
 
             Assert.IsNotNull(number);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IncomingPhoneNumbersShouldReturnListOfPhoneNumbers()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var numbers = phoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555");
 
             Assert.IsNotNull(numbers);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IncomingPhoneNumbersByFriendlyNameShouldReturnListOfPhoneNumbers()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555", friendlyName: "test");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var numbers = phoneAutomation.IncomingPhoneNumbers(phoneNumber: "555-555-5555", friendlyName: "test");
 
             Assert.IsNotNull(numbers);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IncomingPhoneNumbersWithNowParametersShouldThrowNullReferenceError()
         {
             try
             {
-                TwilioAccount_Mock account = new TwilioAccount_Mock();
-                PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-                IList<PhoneNumber> numbers = PhoneAutomation.IncomingPhoneNumbers();
+                var account = new TwilioAccountMock();
+                var phoneAutomation = new PhoneAutomation(account);
+                phoneAutomation.IncomingPhoneNumbers();
                 Assert.Fail("Cannot call this method without params");
             }
             catch (System.Exception ex)
@@ -198,35 +143,35 @@ namespace twilio.sugar.tests
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateProvisionedPhoneNumberShouldReturnUpdatedPhoneResource()
         {
             throw new System.NotImplementedException();
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void DeleteProvisionedPhoneNumberWithValidPhoneObjectShouldReturnNullBody()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
 
-            PhoneNumber phoneNumber = new PhoneNumber{
+            var phoneNumber = new PhoneNumber{
                 sid = "1", phone_number = "1"
             };
-            PhoneAutomation.DeleteProvisionedPhoneNumber(phoneNumber);
+            phoneAutomation.DeleteProvisionedPhoneNumber(phoneNumber);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void DeleteProvisionedPhoneNumberWithNullSidShouldReturnArgumentNullException()
         {
             try
             {
-                TwilioAccount_Mock account = new TwilioAccount_Mock();
-                PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+                var account = new TwilioAccountMock();
+                var phoneAutomation = new PhoneAutomation(account);
 
-                PhoneNumber phoneNumber = new PhoneNumber();
+                var phoneNumber = new PhoneNumber();
 
-                PhoneAutomation.DeleteProvisionedPhoneNumber(phoneNumber);
+                phoneAutomation.DeleteProvisionedPhoneNumber(phoneNumber);
             }
             catch (System.Exception ex)
             {
@@ -235,15 +180,15 @@ namespace twilio.sugar.tests
             
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void DeleteProvisionedPhoneNumberWithNullObjectShouldReturnArgumentNullException()
         {
             try
             {
-                TwilioAccount_Mock account = new TwilioAccount_Mock();
-                PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
+                var account = new TwilioAccountMock();
+                var phoneAutomation = new PhoneAutomation(account);
 
-                PhoneAutomation.DeleteProvisionedPhoneNumber(null);
+                phoneAutomation.DeleteProvisionedPhoneNumber(null);
             }
             catch (System.Exception ex)
             {
@@ -252,44 +197,44 @@ namespace twilio.sugar.tests
         }
 
         //send sms
-        [TestMethod()]
+        [TestMethod]
         public void SendSMSMessageShouldReturnSMSMessageResource()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            SMSMessage message = PhoneAutomation.SendSMSMessage("Test_From", "Test_To", "Test_body");
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var message = phoneAutomation.SendSMSMessage("Test_From", "Test_To", "Test_body");
 
             Assert.IsNotNull(message);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void SMSListShouldReturnListOfSMSResources()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            SMS smsList = PhoneAutomation.SMSMessageList();
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var smsList = phoneAutomation.SMSMessageList();
 
             Assert.IsNotNull(smsList);
             Assert.IsNotNull(smsList.sms_messages);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void FetchingSMSResourceByIdShouldReturnSMSResource()
         {
-            TwilioAccount_Mock account = new TwilioAccount_Mock();
-            PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-            SMSMessage sms = PhoneAutomation.GetSMSMessage("fake_guid"); //some random guid
+            var account = new TwilioAccountMock();
+            var phoneAutomation = new PhoneAutomation(account);
+            var sms = phoneAutomation.GetSMSMessage("fake_guid"); //some random guid
 
             Assert.IsNotNull(sms);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CallingInvalidJsonMethodShouldReturnNotImplementedException()
         {
             try
             {
-                TwilioAccount_Mock account = new TwilioAccount_Mock();
-                account.request("fake_url", "GET", null);
+                var account = new TwilioAccountMock();
+                account.request("fake_url", "GET");
             }
             catch (System.Exception ex)
             {

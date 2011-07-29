@@ -12,12 +12,7 @@ namespace twilio.sugar
             if (dictionary == null)
                 throw new ArgumentNullException("dictionary");
 
-            if (type == typeof(object))
-            {
-                return new DynamicJsonObject(dictionary);
-            }
-
-            return null;
+            return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
 
         public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
@@ -27,7 +22,7 @@ namespace twilio.sugar
 
         public override IEnumerable<Type> SupportedTypes
         {
-            get { return new ReadOnlyCollection<Type>(new List<Type>(new Type[] { typeof(object) })); }
+            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
     }
 }

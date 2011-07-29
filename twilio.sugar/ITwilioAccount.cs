@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace twilio.sugar
+﻿namespace twilio.sugar
 {
     public interface ITwilioAccount
     {

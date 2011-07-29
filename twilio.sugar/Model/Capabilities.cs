@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace twilio.sugar
+namespace twilio.sugar.Model
 {
     public class Capabilities
     {

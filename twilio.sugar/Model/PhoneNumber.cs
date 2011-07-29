@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace twilio.sugar
+namespace twilio.sugar.Model
 {
     //create a test for uri's vs string
     public class PhoneNumber

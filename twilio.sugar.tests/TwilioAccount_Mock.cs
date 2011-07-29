@@ -5,7 +5,7 @@ namespace twilio.sugar.tests
     /// <summary>
     /// Use the Twilio API example for test data
     /// </summary>
-    public class TwilioAccount_Mock : ITwilioAccount
+    public class TwilioAccountMock : ITwilioAccount
     {
         public string request(string path, string method, System.Collections.Hashtable vars = null)
         {

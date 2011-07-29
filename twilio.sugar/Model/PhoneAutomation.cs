@@ -5,34 +5,34 @@ using System.Web.Script.Serialization;
 
 namespace twilio.sugar.Model
 {
-    public class PhoneAutomation : twilio.sugar.Model.IPhoneAutomation
+    public class PhoneAutomation : IPhoneAutomation
     {
         const string IsoCountryCode = "US";
 
-        private ITwilioAccount account;
-        private Hashtable parameters = new Hashtable();
-        private String twilioResponse;
+        private readonly ITwilioAccount _account;
+        private readonly Hashtable _parameters = new Hashtable();
+        private String _twilioResponse;
 
         public PhoneAutomation(ITwilioAccount account)
         {
-            this.account = account;
+            _account = account;
         }
 
         private static dynamic ParseResponseData(string response)
         {
             var jss = new JavaScriptSerializer();
             jss.RegisterConverters(new JavaScriptConverter[] { new DynamicJsonConverter() });
-            dynamic data = jss.Deserialize(response, typeof(object)) as dynamic;
+            var data = jss.Deserialize(response, typeof(object)) as dynamic;
             return data;
         }
 
         public Account CreateSubAccount(String friendlyName)
         {
-            parameters.Clear();
-            parameters.Add("FriendlyName", friendlyName);
+            _parameters.Clear();
+            _parameters.Add("FriendlyName", friendlyName);
 
-            twilioResponse = account.request("Accounts.json", "POST", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request("Accounts.json", "POST", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var twilioAccount = new Account {
                 sid = data.sid,
@@ -65,10 +65,10 @@ namespace twilio.sugar.Model
 
         public IList<Account> GetSubAccounts()
         {
-            parameters.Clear();
+            _parameters.Clear();
 
-            twilioResponse = account.request("Accounts.json", "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request("Accounts.json", "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             IList<Account> accounts = new List<Account>();
 
@@ -109,15 +109,15 @@ namespace twilio.sugar.Model
 
         public Account GetSubAccount(String friendlyName)
         {
-            parameters.Clear();
+            _parameters.Clear();
             if (String.IsNullOrEmpty(friendlyName))
             {
-                throw new ArgumentNullException("Friendly name is required");
+                throw new ArgumentNullException("friendlyName");
             }
-            parameters.Add("FriendlyName", friendlyName);
+            _parameters.Add("FriendlyName", friendlyName);
 
-            twilioResponse = account.request("Accounts.json", "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request("Accounts.json", "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var acct = new Account
             {
@@ -151,22 +151,22 @@ namespace twilio.sugar.Model
 
         public IList<AvailablePhoneNumber> AvailableLocalPhoneNumbers(Int32? areaCode = null, String contains = null, String inRegion = null, Int32? inPostalCode = null)
         {
-            parameters.Clear();
+            _parameters.Clear();
             if (areaCode.HasValue) {
-                parameters.Add("AreaCode", areaCode);
+                _parameters.Add("AreaCode", areaCode);
             }
             if (!String.IsNullOrEmpty(contains)) {
-                parameters.Add("Contains", contains);
+                _parameters.Add("Contains", contains);
             }
             if (!String.IsNullOrEmpty(inRegion)) {
-                parameters.Add("InRegion", inRegion);
+                _parameters.Add("InRegion", inRegion);
             }
             if (inPostalCode.HasValue) {
-                parameters.Add("InPostalCode", inPostalCode);
+                _parameters.Add("InPostalCode", inPostalCode);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/AvailablePhoneNumbers/{1}/Local.json", account.id, IsoCountryCode), "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/AvailablePhoneNumbers/{1}/Local.json", _account.id, IsoCountryCode), "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             IList<AvailablePhoneNumber> phoneNumbers = new List<AvailablePhoneNumber>();
 
@@ -189,13 +189,13 @@ namespace twilio.sugar.Model
 
         public IList<AvailablePhoneNumber> AvailableTollFreePhoneNumbers(String contains = null)
         {
-            parameters.Clear();
+            _parameters.Clear();
             if (!String.IsNullOrEmpty(contains)) {
-                parameters.Add("Contains", contains);
+                _parameters.Add("Contains", contains);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/AvailablePhoneNumbers/{1}/TollFree.json", account.id, IsoCountryCode), "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/AvailablePhoneNumbers/{1}/TollFree.json", _account.id, IsoCountryCode), "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             IList<AvailablePhoneNumber> phoneNumbers = new List<AvailablePhoneNumber>();
 
@@ -219,35 +219,35 @@ namespace twilio.sugar.Model
         public PhoneNumber ProvisionPhoneNumber(String phoneNumber = null, Int32? areaCode = null, PhoneNumber model = null, String voiceUrl = null, String voiceFallbackUrl = null, String smsUrl = null, String smsFallbackUrl = null)
         {
             if ((String.IsNullOrEmpty(phoneNumber) && !areaCode.HasValue) && model == null) {
-                throw new ArgumentNullException("phone or area code");
+                throw new ArgumentNullException("phoneNumber");
             }
 
-            parameters.Clear();
+            _parameters.Clear();
             if (model != null) {
                 AddParametersFromPhoneNumberModel(model);
             } else if (!String.IsNullOrEmpty(phoneNumber)) {
-                parameters.Add("PhoneNumber", phoneNumber);
-            } else {
-                parameters.Add("AreaCode", areaCode);
+                _parameters.Add("PhoneNumber", phoneNumber);
+            } else if (areaCode != null) {
+                _parameters.Add("AreaCode", areaCode);
             }
 
             if (!String.IsNullOrEmpty(voiceUrl)) {
-                parameters.Add("VoiceUrl", voiceUrl);
-                parameters.Add("VoiceMethod", "GET");
+                _parameters.Add("VoiceUrl", voiceUrl);
+                _parameters.Add("VoiceMethod", "GET");
             }
             if (!String.IsNullOrEmpty(voiceFallbackUrl)) {
-                parameters.Add("VoiceFallbackUrl", voiceFallbackUrl);
+                _parameters.Add("VoiceFallbackUrl", voiceFallbackUrl);
             }
             if (!String.IsNullOrEmpty(smsUrl)) {
-                parameters.Add("smsUrl", smsUrl);
-                parameters.Add("smsMethod", "GET");
+                _parameters.Add("smsUrl", smsUrl);
+                _parameters.Add("smsMethod", "GET");
             }
             if (!String.IsNullOrEmpty(smsFallbackUrl)) {
-                parameters.Add("smsFallbackUrl", smsFallbackUrl);
+                _parameters.Add("smsFallbackUrl", smsFallbackUrl);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", account.id), "POST", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", _account.id), "POST", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var phone = new PhoneNumber
             {
@@ -283,23 +283,23 @@ namespace twilio.sugar.Model
         {
             if ((String.IsNullOrEmpty(phoneNumber)))
             {
-                throw new ArgumentNullException("phone");
+                throw new ArgumentNullException("phoneNumber");
             }
 
-            parameters.Clear();
-            parameters.Add("PhoneNumber", phoneNumber);
+            _parameters.Clear();
+            _parameters.Add("PhoneNumber", phoneNumber);
             if (!String.IsNullOrEmpty(voiceUrl))
             {
-                parameters.Add("VoiceUrl", voiceUrl);
-                parameters.Add("VoiceMethod", "GET");
+                _parameters.Add("VoiceUrl", voiceUrl);
+                _parameters.Add("VoiceMethod", "GET");
             }
             if (!String.IsNullOrEmpty(voiceFallbackUrl))
             {
-                parameters.Add("VoiceFallbackUrl", voiceFallbackUrl);
+                _parameters.Add("VoiceFallbackUrl", voiceFallbackUrl);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", account.id), "POST", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", _account.id), "POST", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var phone = new PhoneNumber
             {
@@ -336,14 +336,14 @@ namespace twilio.sugar.Model
         {
             if (model == null || String.IsNullOrEmpty(model.sid))
             {
-                throw new ArgumentNullException("missing phoneNumber");
+                throw new ArgumentNullException("model");
             }
 
-            parameters.Clear();
+            _parameters.Clear();
             AddParametersFromPhoneNumberModel(model);
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers/{1}.json", account.id, model.sid), "POST", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers/{1}.json", _account.id, model.sid), "POST", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var phone = new PhoneNumber
             {
@@ -380,89 +380,89 @@ namespace twilio.sugar.Model
         {
             if (model == null || String.IsNullOrEmpty(model.sid))
             {
-                throw new ArgumentNullException("missing phoneNumber");
+                throw new ArgumentNullException("model");
             }
 
-            parameters.Clear();
+            _parameters.Clear();
             AddParametersFromPhoneNumberModel(model);
 
-            account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers/{1}.json", account.id, model.sid), "DELETE", parameters);
+            _account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers/{1}.json", _account.id, model.sid), "DELETE", _parameters);
         }
 
         private void AddParametersFromPhoneNumberModel(PhoneNumber model)
         {
             if (String.IsNullOrEmpty(model.phone_number) && !model.areaCode.HasValue)
             {
-                throw new ArgumentNullException("phone or area code");
+                throw new ArgumentNullException("model");
             }
             if (!String.IsNullOrEmpty(model.phone_number))
             {
-                parameters.Add("PhoneNumber", model.phone_number);
+                _parameters.Add("PhoneNumber", model.phone_number);
             }
-            else
+            else if (model.areaCode != null)
             {
-                parameters.Add("AreaCode", model.areaCode);
+                _parameters.Add("AreaCode", model.areaCode);
             }
             if (!String.IsNullOrEmpty(model.friendly_name))
             {
-                parameters.Add("FriendlyName", model.friendly_name);
+                _parameters.Add("FriendlyName", model.friendly_name);
             }
             if (model.voice_url != null)
             {
-                parameters.Add("VoiceUrl", model.voice_url.ToString());
+                _parameters.Add("VoiceUrl", model.voice_url);
             }
             if (!String.IsNullOrEmpty(model.voice_method))
             {
-                parameters.Add("VoiceMethod", model.voice_method);
+                _parameters.Add("VoiceMethod", model.voice_method);
             }
             if (model.voice_fallback_url != null)
             {
-                parameters.Add("VoiceFallbackUrl", model.voice_fallback_url.ToString());
+                _parameters.Add("VoiceFallbackUrl", model.voice_fallback_url);
             }
             if (!String.IsNullOrEmpty(model.voice_fallback_method))
             {
-                parameters.Add("VoiceFallbackMethod", model.voice_fallback_method);
+                _parameters.Add("VoiceFallbackMethod", model.voice_fallback_method);
             }
             if (!String.IsNullOrEmpty(model.status_callback))
             {
-                parameters.Add("StatusCallback", model.status_callback);
+                _parameters.Add("StatusCallback", model.status_callback);
             }
             if (!String.IsNullOrEmpty(model.status_callback_method))
             {
-                parameters.Add("StatusCallbackMethod", model.status_callback_method);
+                _parameters.Add("StatusCallbackMethod", model.status_callback_method);
             }
             if (model.sms_url != null)
             {
-                parameters.Add("SmsUrl", model.sms_url.ToString());
+                _parameters.Add("SmsUrl", model.sms_url);
             }
             if (!String.IsNullOrEmpty(model.sms_method))
             {
-                parameters.Add("SmsMethod", model.sms_method);
+                _parameters.Add("SmsMethod", model.sms_method);
             }
             if (model.sms_fallback_url != null)
             {
-                parameters.Add("SmsFallbackUrl", model.sms_fallback_url.ToString());
+                _parameters.Add("SmsFallbackUrl", model.sms_fallback_url);
             }
             if (!String.IsNullOrEmpty(model.sms_fallback_method))
             {
-                parameters.Add("SmsFallbackMethod", model.sms_fallback_method);
+                _parameters.Add("SmsFallbackMethod", model.sms_fallback_method);
             }
         }
 
         public IList<PhoneNumber> IncomingPhoneNumbers(String phoneNumber = "", String friendlyName = "")
         {
-            parameters.Clear();
+            _parameters.Clear();
             if (!String.IsNullOrEmpty(phoneNumber))
             {
-                parameters.Add("PhoneNumber", phoneNumber);
+                _parameters.Add("PhoneNumber", phoneNumber);
             }
             if (!String.IsNullOrEmpty(friendlyName))
             {
-                parameters.Add("FriendlyName", friendlyName);
+                _parameters.Add("FriendlyName", friendlyName);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", account.id), "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/IncomingPhoneNumbers.json", _account.id), "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             IList<PhoneNumber> incomingPhoneNumbers = new List<PhoneNumber>();
 
@@ -502,24 +502,22 @@ namespace twilio.sugar.Model
 
         public SMS SMSMessageList(String to = "", String from = "", DateTime? dateSent = null)
         {
-            parameters.Clear();
+            _parameters.Clear();
             if (!String.IsNullOrEmpty(to))
             {
-                parameters.Add("To", to);
+                _parameters.Add("To", to);
             }
             if (!String.IsNullOrEmpty(from))
             {
-                parameters.Add("From", from);
+                _parameters.Add("From", from);
             }
             if (dateSent.HasValue)
             {
-                parameters.Add("DateSent", dateSent.Value);
+                _parameters.Add("DateSent", dateSent.Value);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/sms/messages.json", account.id), "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
-
-            SMS smsMessages = new SMS();
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages.json", _account.id), "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var sms = new SMS
             {
@@ -564,12 +562,12 @@ namespace twilio.sugar.Model
 
         public SMSMessage GetSMSMessage(String sid)
         {
-            parameters.Clear();
+            _parameters.Clear();
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/sms/messages/{1}.json", account.id, sid), "GET", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages/{1}.json", _account.id, sid), "GET", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
-            SMSMessage smsMessages = new SMSMessage {
+            var smsMessages = new SMSMessage {
                 account_sid = data.account_sid,
                 api_version = data.api_version,
                 body = data.body,
@@ -590,17 +588,17 @@ namespace twilio.sugar.Model
 
         public SMSMessage SendSMSMessage(String from, String to, String body, String statusCallback = "")
         {
-            parameters.Clear();
-            parameters.Add("From", from);
-            parameters.Add("To", to);
-            parameters.Add("Body", body);
+            _parameters.Clear();
+            _parameters.Add("From", from);
+            _parameters.Add("To", to);
+            _parameters.Add("Body", body);
             if (!String.IsNullOrEmpty(statusCallback))
             {
-                parameters.Add("StatusCallback", statusCallback);
+                _parameters.Add("StatusCallback", statusCallback);
             }
 
-            twilioResponse = account.request(String.Format("Accounts/{0}/sms/messages.json", account.id), "POST", parameters);
-            dynamic data = ParseResponseData(twilioResponse);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages.json", _account.id), "POST", _parameters);
+            dynamic data = ParseResponseData(_twilioResponse);
 
             var sms = new SMSMessage
             {

@@ -26,16 +26,16 @@ OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
-using twilio.sugar;
 
-namespace TwilioRest
+namespace twilio.sugar
 {
     public class TwilioAccount : ITwilioAccount
     {
-        const string TWILIO_API_URL = "https://api.twilio.com";
+        const string TwilioApiUrl = "https://api.twilio.com";
         const string ApiVersion = "2010-04-01";
 
         public string id { get; private set; }
@@ -47,24 +47,21 @@ namespace TwilioRest
             this.token = token;
         }
 
-        private string _download(string uri, Hashtable vars)
+        private string Download(string uri, Hashtable vars)
         {
             // 1. format query string
             if (vars != null)
             {
-                string query = "";
-                foreach(DictionaryEntry d in vars)
-                    query += "&" + d.Key.ToString() + "=" + 
-                        HttpUtility.UrlEncode(d.Value.ToString());
+                string query = vars.Cast<DictionaryEntry>().Aggregate("", (current, d) => current + ("&" + d.Key.ToString() + "=" + HttpUtility.UrlEncode(d.Value.ToString())));
                 if (query.Length > 0)
                     uri = uri + "?" + query.Substring(1);
             }
             
             // 2. setup basic authenication
-            string authstring = Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}",this.id, this.token)));
+            string authstring = Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}",id, token)));
             
             // 3. perform GET using WebClient
-            WebClient client = new WebClient();
+            var client = new WebClient();
             client.Headers.Add("Authorization",
                 String.Format("Basic {0}", authstring));
             byte[] resp = client.DownloadData(uri);
@@ -72,25 +69,22 @@ namespace TwilioRest
             return Encoding.ASCII.GetString(resp);
         }
         
-        private string _upload(string uri, string method, Hashtable vars)
+        private string Upload(string uri, string method, Hashtable vars)
         {
             // 1. format body data
-            string data = "";
+            var data = "";
             if (vars != null)
             {
-                foreach(DictionaryEntry d in vars)
-                {
-                    data += d.Key.ToString() + "=" + HttpUtility.UrlEncode(d.Value.ToString()) + "&";
-                }
+                data = vars.Cast<DictionaryEntry>().Aggregate(data, (current, d) => current + (d.Key.ToString() + "=" + HttpUtility.UrlEncode(d.Value.ToString()) + "&"));
             }
             
             // 2. setup basic authenication
-            string authstring = Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}", this.id, this.token)));
+            var authstring = Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("{0}:{1}", id, token)));
             
             // 3. perform POST/PUT/DELETE using WebClient
             ServicePointManager.Expect100Continue = false;
             Byte[] postbytes = Encoding.ASCII.GetBytes(data);
-            WebClient client = new WebClient();
+            var client = new WebClient();
             
             client.Headers.Add("Authorization", String.Format("Basic {0}", authstring));
             client.Headers.Add("Content-Type",  "application/x-www-form-urlencoded");
@@ -105,14 +99,13 @@ namespace TwilioRest
             path = String.Format("/{0}/", ApiVersion) + path;
 
             if (path[0] == '/')
-                return TWILIO_API_URL + path;
-            else
-                return TWILIO_API_URL + "/" + path;
+                return TwilioApiUrl + path;
+            return TwilioApiUrl + "/" + path;
         }
         
         public string request(string path, string method, Hashtable vars = null)
         {
-            string response = null;
+            string response;
             
             if (path == null || path.Length <= 0)
                 throw(new ArgumentException("Invalid path parameter"));
@@ -123,7 +116,7 @@ namespace TwilioRest
                 throw(new ArgumentException("Invalid method parameter"));
             }
             
-            if (method != "GET" && vars.Count <= 0)
+            if (vars != null && (method != "GET" && vars.Count <= 0))
             {
                 throw(new ArgumentException("No vars parameters"));
             }
@@ -131,14 +124,7 @@ namespace TwilioRest
             string url = _build_uri(path);
             try
             {
-                if (method == "GET")
-                {
-                    response = _download(url, vars);
-                }
-                else
-                {
-                    response = _upload(url, method, vars);
-                }
+                response = method == "GET" ? Download(url, vars) : Upload(url, method, vars);
             }
             catch(WebException e)
             {
@@ -151,32 +137,37 @@ namespace TwilioRest
                         break;
                 }
 
-                string var_list = "";
-                foreach(DictionaryEntry d in vars)
+                if (vars != null)
                 {
-                    var_list += "&" + d.Key.ToString() + "=" + 
-                        HttpUtility.UrlEncode(d.Value.ToString());
-                }
+                    var varList = vars.Cast<DictionaryEntry>().Aggregate("", (current, d) => current + ("&" + d.Key.ToString() + "=" + HttpUtility.UrlEncode(d.Value.ToString())));
 
 
-                string response_str = "";
-                using (StreamReader sr = new StreamReader(e.Response.GetResponseStream()))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
+                    var responseStr = "";
+                    if (e.Response != null)
                     {
-                        response_str += line;
+                        var responseStream = e.Response.GetResponseStream();
+                        if (responseStream != null)
+                        {
+                            using (var sr = new StreamReader(responseStream))
+                            {
+                                string line;
+                                while ((line = sr.ReadLine()) != null)
+                                {
+                                    responseStr += line;
+                                }
+                            }
+                        }
                     }
+
+
+                    message = String.Format("TwilioRestException occurred in the request you sent: \n{0}\n\tURLL: {1}\n\tMETHOD:{2}\n\tVARS:{3}\n\tRESPONSE:{4}",
+                                            message,
+                                            url,
+                                            method,
+                                            varList,
+                                            responseStr);
                 }
 
-                
-                message = String.Format("TwilioRestException occurred in the request you sent: \n{0}\n\tURLL: {1}\n\tMETHOD:{2}\n\tVARS:{3}\n\tRESPONSE:{4}",
-                                        message,
-                                        url,
-                                        method,
-                                        var_list,
-                                        response_str);
-                
                 throw new TwilioRestException(message, e);
             }
 
@@ -184,10 +175,10 @@ namespace TwilioRest
         }
     }
 
-    [Serializable()]
-    public class TwilioRestException : System.Exception {
+    [Serializable]
+    public class TwilioRestException : Exception {
 
-        public TwilioRestException() : base()
+        public TwilioRestException()
         {
         }
         
@@ -195,7 +186,7 @@ namespace TwilioRest
         {
         }
 
-        public TwilioRestException(string message, System.Exception innerException) : base(message, innerException)
+        public TwilioRestException(string message, Exception innerException) : base(message, innerException)
         { 
         }
 

@@ -1,38 +1,21 @@
 ﻿using twilio.sugar.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace twilio.sugar.tests
 {
-    
     
     /// <summary>
     ///This is a test class for SMSTest and is intended
     ///to contain all SMSTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class SMSTest
     {
-
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         // 
@@ -68,39 +51,34 @@ namespace twilio.sugar.tests
         /// <summary>
         ///A test for SMS Constructor
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void SMSConstructorTest()
         {
-            SMS target = new SMS();
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
 
         /// <summary>
         ///A test for end
         ///</summary>
-        [TestMethod()]
-        public void endTest()
+        [TestMethod]
+        public void EndTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.end = expected;
-            actual = target.end;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {end = null}; // TODO: Initialize to an appropriate value
+            var actual = target.end;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for first_page_uri
         ///</summary>
-        [TestMethod()]
-        public void first_page_uriTest()
+        [TestMethod]
+        public void FirstPageUriTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
+            var target = new SMS(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             target.first_page_uri = expected;
-            actual = target.first_page_uri;
+            var actual = target.first_page_uri;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -108,14 +86,13 @@ namespace twilio.sugar.tests
         /// <summary>
         ///A test for last_page_uri
         ///</summary>
-        [TestMethod()]
-        public void last_page_uriTest()
+        [TestMethod]
+        public void LastPageUriTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
+            var target = new SMS(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             target.last_page_uri = expected;
-            actual = target.last_page_uri;
+            var actual = target.last_page_uri;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -123,14 +100,13 @@ namespace twilio.sugar.tests
         /// <summary>
         ///A test for next_page_uri
         ///</summary>
-        [TestMethod()]
-        public void next_page_uriTest()
+        [TestMethod]
+        public void NextPageUriTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
+            var target = new SMS(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             target.next_page_uri = expected;
-            actual = target.next_page_uri;
+            var actual = target.next_page_uri;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -138,59 +114,49 @@ namespace twilio.sugar.tests
         /// <summary>
         ///A test for num_pages
         ///</summary>
-        [TestMethod()]
-        public void num_pagesTest()
+        [TestMethod]
+        public void NumPagesTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.num_pages = expected;
-            actual = target.num_pages;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {num_pages = null}; // TODO: Initialize to an appropriate value
+            var actual = target.num_pages;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for page
         ///</summary>
-        [TestMethod()]
-        public void pageTest()
+        [TestMethod]
+        public void PageTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.page = expected;
-            actual = target.page;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {page = null}; // TODO: Initialize to an appropriate value
+            var actual = target.page;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for page_size
         ///</summary>
-        [TestMethod()]
-        public void page_sizeTest()
+        [TestMethod]
+        public void PageSizeTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.page_size = expected;
-            actual = target.page_size;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {page_size = null}; // TODO: Initialize to an appropriate value
+            var actual = target.page_size;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for previous_page_uri
         ///</summary>
-        [TestMethod()]
-        public void previous_page_uriTest()
+        [TestMethod]
+        public void PreviousPageUriTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
+            var target = new SMS(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             target.previous_page_uri = expected;
-            actual = target.previous_page_uri;
+            var actual = target.previous_page_uri;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -198,59 +164,49 @@ namespace twilio.sugar.tests
         /// <summary>
         ///A test for sms_messages
         ///</summary>
-        [TestMethod()]
-        public void sms_messagesTest()
+        [TestMethod]
+        public void SMSMessagesTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            IList<SMSMessage> expected = null; // TODO: Initialize to an appropriate value
-            IList<SMSMessage> actual;
-            target.sms_messages = expected;
-            actual = target.sms_messages;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {sms_messages = null}; // TODO: Initialize to an appropriate value
+            var actual = target.sms_messages;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for start
         ///</summary>
-        [TestMethod()]
-        public void startTest()
+        [TestMethod]
+        public void StartTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.start = expected;
-            actual = target.start;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {start = null}; // TODO: Initialize to an appropriate value
+            var actual = target.start;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for total
         ///</summary>
-        [TestMethod()]
-        public void totalTest()
+        [TestMethod]
+        public void TotalTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            Nullable<int> expected = new Nullable<int>(); // TODO: Initialize to an appropriate value
-            Nullable<int> actual;
-            target.total = expected;
-            actual = target.total;
-            Assert.AreEqual(expected, actual);
+            var target = new SMS {total = null}; // TODO: Initialize to an appropriate value
+            var actual = target.total;
+            Assert.AreEqual(null, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         /// <summary>
         ///A test for uri
         ///</summary>
-        [TestMethod()]
-        public void uriTest()
+        [TestMethod]
+        public void UriTest()
         {
-            SMS target = new SMS(); // TODO: Initialize to an appropriate value
-            string expected = string.Empty; // TODO: Initialize to an appropriate value
-            string actual;
+            var target = new SMS(); // TODO: Initialize to an appropriate value
+            var expected = string.Empty; // TODO: Initialize to an appropriate value
             target.uri = expected;
-            actual = target.uri;
+            var actual = target.uri;
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
