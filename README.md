@@ -14,8 +14,8 @@ Thrid, I've been wanting to learn TDD and Unit Testing. The core is being tested
 
 Compile this class library, drop the dll into your app, and write some code:
 
-	TwilioAccount account = new TwilioAccount();
-	PhoneAutomation PhoneAutomation = new PhoneAutomation(account);
-	IList<AvailablePhoneNumber> AvailablePhoneNumbers = PhoneAutomation.AvailableLocalPhoneNumbers(AreaCode: 480);
+	var account = new TwilioAccount();
+	var phoneAutomation = new PhoneAutomation(account);
+	var availablePhoneNumbers = phoneAutomation.AvailableLocalPhoneNumbers(AreaCode: 480);
 
 This should get you a list of available phone numbers.
