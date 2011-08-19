@@ -356,16 +356,16 @@ namespace twilio.sugar.Model
                 voice_fallback_url = data.voice_fallback_url,
                 voice_fallback_method = data.voice_fallback_method,
                 voice_caller_id_lookup = data.voice_caller_id_lookup,
-                date_created = data.date_created,
-                date_updated = data.date_updated,
+                date_created = !String.IsNullOrEmpty(data.date_created) ? Convert.ToDateTime(data.date_created) : null,
+                date_updated = !String.IsNullOrEmpty(data.date_updated) ? Convert.ToDateTime(data.date_updated) : null,
                 sms_url = data.sms_url,
                 sms_method = data.sms_method,
                 sms_fallback_url = data.sms_fallback_url,
                 sms_fallback_method = data.sms_fallback_method,
                 capabilities = new Capabilities
                 {
-                    sms = data.capabilities.sms,
-                    voice = data.capabilities.voice
+                    sms = !String.IsNullOrEmpty(data.capabilities.sms) ? Convert.ToBoolean(data.capabilities.sms) : null,
+                    voice = !String.IsNullOrEmpty(data.capabilities.voice) ? Convert.ToBoolean(data.capabilities.voice) : null
                 },
                 status_callback = data.status_callback,
                 status_callback_method = data.status_callback_method,
