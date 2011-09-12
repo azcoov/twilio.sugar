@@ -516,7 +516,7 @@ namespace twilio.sugar.Model
                 _parameters.Add("DateSent", dateSent.Value);
             }
 
-            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages.json", _account.id), "GET", _parameters);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/SMS/Messages.json", _account.id), "GET", _parameters);
             dynamic data = ParseResponseData(_twilioResponse);
 
             var sms = new SMS
@@ -564,7 +564,7 @@ namespace twilio.sugar.Model
         {
             _parameters.Clear();
 
-            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages/{1}.json", _account.id, sid), "GET", _parameters);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/SMS/Messages/{1}.json", _account.id, sid), "GET", _parameters);
             dynamic data = ParseResponseData(_twilioResponse);
 
             var smsMessages = new SMSMessage {
@@ -597,7 +597,7 @@ namespace twilio.sugar.Model
                 _parameters.Add("StatusCallback", statusCallback);
             }
 
-            _twilioResponse = _account.request(String.Format("Accounts/{0}/sms/messages.json", _account.id), "POST", _parameters);
+            _twilioResponse = _account.request(String.Format("Accounts/{0}/SMS/Messages.json", _account.id), "POST", _parameters);
             dynamic data = ParseResponseData(_twilioResponse);
 
             var sms = new SMSMessage
